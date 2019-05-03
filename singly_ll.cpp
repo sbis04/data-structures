@@ -154,7 +154,7 @@ ALGORITHM FOR INSERTING AFTER A GIVEN NODE:
 
   8) PREPTR -> NEXT = NEW_NODE
   9) NEW_NODE -> NEXT = PTR
-  7) EXIT
+  10) EXIT
 
 */
 
@@ -211,7 +211,7 @@ ALGORITHM FOR INSERTING BEFORE A GIVEN NODE:
 
   8) PREPTR -> NEXT = NEW_NODE
   9) NEW_NODE -> NEXT = PTR
-  7) EXIT
+  10) EXIT
 
 */
 
@@ -718,6 +718,9 @@ int main() {
 
   // Freeing the space occupied by start
   if(option == 13) {
+    cout<< "\nTHANK YOU for using the program !\n"
+        <<"Have a good day.\n\n";
+
     delete start;
   }
 }
