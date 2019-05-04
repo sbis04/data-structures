@@ -36,6 +36,7 @@ struct node *del_after(node *);
 struct node *del_before(node *);
 struct node *del_element(node *);
 
+void count(node *);
 void display(node *);
 
 
@@ -580,6 +581,51 @@ node *del_element(node *start) {
 
 /*
 
+ALGORITHM FOR COUNTING THE NUMBER OF ELEMENTS:
+
+  1) IF START = NULL
+        Write Underflow
+        EXIT
+
+  2) PTR = START
+  3) SET COUNT = 0
+  4) WHILE PTR != NULL
+        COUNT = COUNT + 1
+        PTR = PTR -> NEXT
+
+  5) WRITE COUNT
+  6) EXIT
+
+*/
+
+void count(node *start) {
+  int count = 0;
+
+  // Checking if the linked list is empty
+  if(start == NULL) {
+    cout<<"The linked list is empty !\n";
+  }
+  else {
+    count = 1;
+
+    // Storing start in ptr
+    node *ptr = start;
+
+    // Incrementing till the end
+    while(ptr->next != start) {
+      count++;
+      ptr = ptr->next;
+    }
+  }
+  // Printing the number of elements
+  cout<<"The number of elements present in the linked list are: "
+      <<count
+      <<endl;
+}
+
+
+/*
+
 ALGORITHM FOR DISPLAYING THE ELEMENTS:
 
   1) IF START = NULL
@@ -635,8 +681,9 @@ int main() {
         <<"8. Delete after an element\n"
         <<"9. Delete before an element\n"
         <<"10. Delete the element\n"
-        <<"11. Display\n"
-        <<"12. Exit\n";
+        <<"11. Count\n"
+        <<"12. Display\n"
+        <<"13. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -689,18 +736,21 @@ int main() {
       case 10: start = del_element(start);
               break;
 
-      case 11: display(start);
+      case 11: count(start);
               break;
 
-      case 12: break;
+      case 12: display(start);
+              break;
+
+      case 13: break;
 
       default: cout<<"Wrong option is selecred !!\n";
               break;
     }
-  } while(option != 12);
+  } while(option != 13);
 
   // Freeing the space occupied by start
-  if(option == 12) {
+  if(option == 13) {
     cout<< "\nTHANK YOU for using the program !\n"
         <<"Have a good day.\n\n";
 
