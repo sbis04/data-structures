@@ -25,6 +25,8 @@ using namespace std;
 // Function prototypes
 struct node *insert_beg(node *, int );
 struct node *insert_end(node *, int );
+struct node *insert_after(node *, int );
+struct node *insert_before(node *, int );
 
 struct node *create(node *);
 
@@ -141,6 +143,120 @@ node *insert_end(node *start, int value) {
 }
 
 
+/*
+
+ALGORITHM FOR INSERTING AFTER A GIVEN NODE:
+
+  1) IF AVAIL = NULL
+        Write Overflow
+        EXIT
+
+  2) NEW_NODE = AVAIL
+  3) AVAIL = AVAIL -> NEXT
+  4) NEW_NODE -> DATA = VALUE
+  5) PTR = START
+  6) PREPTR = PTR
+  7) WHILE PREPTR -> NEXT != NUM
+        PREPTR = PTR
+        PTR = PTR -> NEXT
+
+  8) PREPTR -> NEXT = NEW_NODE
+  9) NEW_NODE -> NEXT = PTR
+  10) EXIT
+
+*/
+
+node *insert_after(node *start, int value) {
+  int num;
+
+  // Storing the value of start to ptr
+  node *ptr = start;
+
+  // Number after which to insert
+  cout<<"Enter the number after which to insert: ";
+  cin>>num;
+
+  // Creating a new node
+  node *new_node = new node;
+
+  // Storing the data
+  new_node->data = value;
+
+  // Taking another node to store the location of
+  // the element before ptr
+  node *preptr = ptr;
+
+  // Incrementing till the number is found
+  while(preptr->data != num) {
+    preptr = ptr;
+    ptr = ptr->next;
+  }
+
+  // Adding the new node
+  preptr->next = new_node;
+  new_node->next = ptr;
+
+  return start;
+}
+
+
+/*
+
+ALGORITHM FOR INSERTING BEFORE A GIVEN NODE:
+
+  1) IF AVAIL = NULL
+        Write Overflow
+        EXIT
+
+  2) NEW_NODE = AVAIL
+  3) AVAIL = AVAIL -> NEXT
+  4) NEW_NODE -> DATA = VALUE
+  5) PTR = START
+  6) PREPTR = PTR
+  7) WHILE PTR -> NEXT != NUM
+        PREPTR = PTR
+        PTR = PTR -> NEXT
+
+  8) PREPTR -> NEXT = NEW_NODE
+  9) NEW_NODE -> NEXT = PTR
+  10) EXIT
+
+*/
+
+node *insert_before(node *start, int value) {
+  int num;
+
+  // Storing the value of start to ptr
+  node *ptr = start;
+
+  // Number after which to insert
+  cout<<"Enter the number before which to insert: ";
+  cin>>num;
+
+  // Creating a new node
+  node *new_node = new node;
+
+  // Storing the data
+  new_node->data = value;
+
+  // Taking another node to store the location of
+  // the element before ptr
+  node *preptr = ptr;
+
+  // Incrementing till the number is found
+  while(ptr->data != num) {
+    preptr = ptr;
+    ptr = ptr->next;
+  }
+
+  // Adding the new node
+  preptr->next = new_node;
+  new_node->next = ptr;
+
+  return start;
+}
+
+
 // For creating the entire linked list
 node *create(node *start) {
   int value;
@@ -220,8 +336,10 @@ int main() {
         <<"1. Create the linked list\n"
         <<"2. Insert at the beginning\n"
         <<"3. Insert at the end\n"
-        <<"4. Display\n"
-        <<"5. Exit\n";
+        <<"4. Insert after an element\n"
+        <<"5. Insert before an element\n"
+        <<"6. Display\n"
+        <<"7. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -245,18 +363,32 @@ int main() {
               start = insert_end(start, value);
               break;
 
-      case 4: display(start);
+      case 4: // Storing the value to be inserted
+              cout<<"Enter the value to be stored: ";
+              cin>>value;
+
+              start = insert_after(start, value);
               break;
 
-      case 5: break;
+      case 5: // Storing the value to be inserted
+              cout<<"Enter the value to be stored: ";
+              cin>>value;
+
+              start = insert_before(start, value);
+              break;
+
+      case 6: display(start);
+              break;
+
+      case 7: break;
 
       default: cout<<"Wrong option is selecred !!\n";
               break;
     }
-  } while(option != 5);
+  } while(option != 7);
 
   // Freeing the space occupied by start
-  if(option == 5) {
+  if(option == 7) {
     cout<< "\nTHANK YOU for using the program !\n"
         <<"Have a good day.\n\n";
 
