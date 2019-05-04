@@ -30,6 +30,9 @@ struct node *insert_before(node *, int );
 
 struct node *create(node *);
 
+struct node *del_beg(node *);
+struct node *del_end(node *);
+
 
 /*
 
@@ -288,6 +291,110 @@ node *create(node *start) {
 
 /*
 
+ALGORITHM FOR DELETING FROM THE BEGINNING:
+
+  1) IF START = NULL
+        Write Underflow
+        EXIT
+
+  2) PTR = START
+  3) WHILE PTR -> NEXT != START
+        PTR = PTR -> NEXT
+
+  4) PTR -> NEXT = START -> NEXT
+  5) DELETE START
+  6) START = PTR-> NEXT
+  7) EXIT
+
+*/
+
+node *del_beg(node *start) {
+  // Checking if the linked list is empty
+  if(start == NULL) {
+    cout<<"The linked list is empty !\n";
+  }
+  else {
+    // Storing start to ptr
+    node *ptr = start;
+
+    // Incrementing till the last position
+    while(ptr->next != start) {
+      ptr = ptr->next;
+    }
+
+    // Updating the next block of ptr
+    ptr->next = start->next;
+
+    // Printing the value to be deleted
+    cout<<"The deleted value is: "<<start->data<<endl;
+
+    // Deleting the first element
+    delete start;
+
+    // Assigning the new start
+    start = ptr->next;
+  }
+
+  return start;
+}
+
+
+/*
+
+ALGORITHM FOR DELETING FROM THE END:
+
+  1) IF START = NULL
+        Write Underflow
+        EXIT
+
+  2) PTR = START
+  3) PREPTR = PTR
+  4) WHILE PTR -> NEXT != START
+        PREPTR = PTR
+        PTR = PTR -> NEXT
+
+  5) PREPTR -> NEXT = START
+  6) DELETE PTR
+  7) EXIT
+
+*/
+
+node *del_end(node *start) {
+  // Checking if the linked list is empty
+  if(start == NULL) {
+    cout<<"The linked list is empty !\n";
+  }
+  else {
+    // Storing start to ptr
+    node *ptr = start;
+
+    // Defining another pointer for storing
+    // the previous element of ptr
+    node *preptr = ptr;
+
+    // Incrementing till the last position
+    while(ptr->next != start) {
+      preptr = ptr;
+      ptr = ptr->next;
+    }
+
+    // Storing the address of start in the NEXT block as the
+    // the last element is to be deleted
+    preptr->next = start;
+
+    // Printing the value to be deleted
+    cout<<"The deleted value is: "<<ptr->data<<endl;
+
+    // Deleting the last element
+    delete ptr;
+  }
+
+  return start;
+}
+
+
+/*
+
 ALGORITHM FOR DISPLAYING THE ELEMENTS:
 
   1) IF START = NULL
@@ -295,7 +402,7 @@ ALGORITHM FOR DISPLAYING THE ELEMENTS:
         EXIT
 
   2) PTR = START
-  3) WHILE PTR != NULL
+  3) WHILE PTR != START
         Write PTR -> DATA
         PTR = PTR -> NEXT
   4) EXIT
@@ -338,8 +445,10 @@ int main() {
         <<"3. Insert at the end\n"
         <<"4. Insert after an element\n"
         <<"5. Insert before an element\n"
-        <<"6. Display\n"
-        <<"7. Exit\n";
+        <<"6. Delete from the beginning\n"
+        <<"7. Delete from the end\n"
+        <<"8. Display\n"
+        <<"9. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -377,18 +486,24 @@ int main() {
               start = insert_before(start, value);
               break;
 
-      case 6: display(start);
+      case 6: start = del_beg(start);
               break;
 
-      case 7: break;
+      case 7: start = del_end(start);
+              break;
+
+      case 8: display(start);
+              break;
+
+      case 9: break;
 
       default: cout<<"Wrong option is selecred !!\n";
               break;
     }
-  } while(option != 7);
+  } while(option != 9);
 
   // Freeing the space occupied by start
-  if(option == 7) {
+  if(option == 9) {
     cout<< "\nTHANK YOU for using the program !\n"
         <<"Have a good day.\n\n";
 
