@@ -25,6 +25,8 @@ using namespace std;
 // Function prototypes
 struct node *insert_beg(node *, int );
 struct node *insert_end(node *, int );
+struct node *insert_after(node *, int );
+struct node *insert_before(node *, int );
 
 struct node *create(node *);
 
@@ -125,6 +127,124 @@ node *insert_end(node *start, int value) {
   // Accommodating the new node at the end
   start->prev->next = new_node;
   start->prev = new_node;
+
+  return start;
+}
+
+
+/*
+
+ALGORITHM FOR INSERTING AFTER A GIVEN NODE:
+
+  1) IF AVAIL = NULL
+        Write Overflow
+        EXIT
+
+  2) NEW_NODE = AVAIL
+  3) AVAIL = AVAIL -> NEXT
+  4) NEW_NODE -> DATA = VALUE
+  5) PTR = START
+  6) WHILE ptr -> DATA != NUM
+        PTR = PTR -> NEXT
+
+  7) NEW_NODE -> NEXT = PTR -> NEXT
+  8) NEW_NODE -> PREV = PTR
+  9) PTR -> NEXT -> PREV = NEW_NODE
+  10) PTR -> NEXT = NEW_NODE
+  11) EXIT
+
+*/
+
+node *insert_after(node *start, int value) {
+  int num;
+
+  // Number after which to insert
+  cout<<"Enter the number after which to insert: ";
+  cin>>num;
+
+  // Creating a new node
+  node *new_node = new node;
+
+  // Storing the data
+  new_node->data = value;
+
+  // Storing the value of start to ptr
+  node *ptr = start;
+
+  // Incrementing till the number is found
+  while(ptr->data != num) {
+    ptr = ptr->next;
+  }
+
+  // Adding the new node
+  new_node->next = ptr->next;
+  new_node->prev = ptr;
+  ptr->next->prev = new_node;
+  ptr->next = new_node;
+
+  return start;
+}
+
+
+/*
+
+ALGORITHM FOR INSERTING BEFORE A GIVEN NODE:
+
+  1) IF AVAIL = NULL
+        Write Overflow
+        EXIT
+
+  2) NEW_NODE = AVAIL
+  3) AVAIL = AVAIL -> NEXT
+  4) NEW_NODE -> DATA = VALUE
+  5) PTR = START
+  6) WHILE PTR -> NEXT != NUM
+        PREPTR = PTR
+        PTR = PTR -> NEXT
+
+  7) NEW_NODE -> NEXT = PTR
+  8) NEW_NODE -> PREV = PTR -> PREV
+  9) PTR -> PREV -> NEXT = NEW_NODE
+  10) PTR -> PREV = NEW_NODE
+  11) EXIT
+
+*/
+
+node *insert_before(node *start, int value) {
+  int num;
+
+  // Number after which to insert
+  cout<<"Enter the number before which to insert: ";
+  cin>>num;
+
+  // Solving edge case #1
+  if(start->data == num) {
+    // If the element is present is to be inserted before a number,
+    // which is in the beginning, then use the insert_beg method
+    // to insert the new value.
+    start = insert_beg(start, value);
+  }
+  else {
+    // Creating a new node
+    node *new_node = new node;
+
+    // Storing the data
+    new_node->data = value;
+
+    // Storing the value of start to ptr
+    node *ptr = start;
+
+    // Incrementing till the number is found
+    while(ptr->data != num) {
+      ptr = ptr->next;
+    }
+
+    // Adding the new node
+    new_node->next = ptr;
+    new_node->prev = ptr->prev;
+    ptr->prev->next = new_node;
+    ptr->prev = new_node;
+  }
 
   return start;
 }
@@ -257,9 +377,11 @@ int main() {
         <<"1. Create the linked list\n"
         <<"2. Insert at the beginning\n"
         <<"3. Insert at the end\n"
-        <<"4. Count\n"
-        <<"5. Display\n"
-        <<"6. Exit\n";
+        <<"4. Insert after an element\n"
+        <<"5. Insert before an element\n"
+        <<"6. Count\n"
+        <<"7. Display\n"
+        <<"8. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -283,21 +405,35 @@ int main() {
               start = insert_end(start, value);
               break;
 
-      case 4: count(start);
+      case 4: // Storing the value to be inserted
+              cout<<"Enter the value to be stored: ";
+              cin>>value;
+
+              start = insert_after(start, value);
               break;
 
-      case 5: display(start);
+      case 5: // Storing the value to be inserted
+              cout<<"Enter the value to be stored: ";
+              cin>>value;
+
+              start = insert_before(start, value);
               break;
 
-      case 6: break;
+      case 6: count(start);
+              break;
+
+      case 7: display(start);
+              break;
+
+      case 8: break;
 
       default: cout<<"Wrong option is selecred !!\n";
               break;
     }
-  } while(option != 6);
+  } while(option != 8);
 
   // Freeing the space occupied by start
-  if(option == 6) {
+  if(option == 8) {
     cout<< "\nTHANK YOU for using the program !\n"
         <<"Have a good day.\n\n";
 
