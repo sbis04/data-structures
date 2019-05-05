@@ -30,6 +30,9 @@ struct node *insert_before(node *, int );
 
 struct node *create(node *);
 
+struct node *del_beg(node *);
+struct node *del_end(node *);
+
 void count(node *);
 void display(node *);
 
@@ -298,6 +301,98 @@ node *create(node *start) {
 
 /*
 
+ALGORITHM FOR DELETING FROM THE BEGINNING:
+
+  1) IF START = NULL
+        Write Underflow
+        EXIT
+
+  2) PTR = START -> NEXT
+  3) START -> NEXT = PTR -> NEXT
+  4) DELETE PTR
+  5) EXIT
+
+*/
+
+node *del_beg(node *start) {
+  // Checking if the linked list is empty
+  if(start == NULL) {
+    cout<<"The linked list is empty !\n";
+  }
+  else {
+    // Storing start to ptr
+    node *ptr = start->next;
+
+    // Updating the next block of ptr
+    start->next = ptr->next;
+
+    // Printing the value to be deleted
+    cout<<"The deleted value is: "<<ptr->data<<endl;
+
+    // Deleting the first element
+    delete ptr;
+  }
+
+  return start;
+}
+
+
+/*
+
+ALGORITHM FOR DELETING FROM THE END:
+
+  1) IF START = NULL
+        Write Underflow
+        EXIT
+
+  2) PTR = START
+  3) PREPTR = PTR
+  4) WHILE PTR -> NEXT != START
+        PREPTR = PTR
+        PTR = PTR -> NEXT
+
+  5) PREPTR -> NEXT = START
+  6) DELETE PTR
+  7) EXIT
+
+*/
+
+node *del_end(node *start) {
+  // Checking if the linked list is empty
+  if(start == NULL) {
+    cout<<"The linked list is empty !\n";
+  }
+  else {
+    // Storing start to ptr
+    node *ptr = start->next;
+
+    // Defining another pointer for storing
+    // the previous element of ptr
+    node *preptr = ptr;
+
+    // Incrementing till the last position
+    while(ptr->next != start) {
+      preptr = ptr;
+      ptr = ptr->next;
+    }
+
+    // Storing the address of start in the NEXT block as the
+    // the last element is to be deleted
+    preptr->next = start;
+
+    // Printing the value to be deleted
+    cout<<"The deleted value is: "<<ptr->data<<endl;
+
+    // Deleting the last element
+    delete ptr;
+  }
+
+  return start;
+}
+
+
+/*
+
 ALGORITHM FOR COUNTING THE NUMBER OF ELEMENTS:
 
   1) IF START = NULL
@@ -393,9 +488,11 @@ int main() {
         <<"3. Insert at the end\n"
         <<"4. Insert after an element\n"
         <<"5. Insert before an element\n"
-        <<"6. Count\n"
-        <<"7. Display\n"
-        <<"8. Exit\n";
+        <<"6. Delete from the beginning\n"
+        <<"7. Delete from the end\n"
+        <<"8. Count\n"
+        <<"9. Display\n"
+        <<"10. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -433,21 +530,27 @@ int main() {
               start = insert_before(start, value);
               break;
 
-      case 6: count(start);
+      case 6: start = del_beg(start);
               break;
 
-      case 7: display(start);
+      case 7: start = del_end(start);
               break;
 
-      case 8: break;
+      case 8: count(start);
+              break;
+
+      case 9: display(start);
+              break;
+
+      case 10: break;
 
       default: cout<<"Wrong option is selecred !!\n";
               break;
     }
-  } while(option != 8);
+  } while(option != 10);
 
   // Freeing the space occupied by start
-  if(option == 8) {
+  if(option == 10) {
     cout<< "\nTHANK YOU for using the program !\n"
         <<"Have a good day.\n\n";
 
