@@ -32,6 +32,9 @@ struct node *create(node *);
 
 struct node *del_beg(node *);
 struct node *del_end(node *);
+struct node *del_after(node *);
+struct node *del_before(node *);
+struct node *del_element(node *);
 
 void count(node *);
 void display(node *);
@@ -393,6 +396,186 @@ node *del_end(node *start) {
 
 /*
 
+ALGORITHM FOR DELETING AN ELEMENT AFTER A GIVEN NODE:
+
+  1) IF START = NULL
+        Write Underflow
+        EXIT
+
+  2) PTR = START -> NEXT
+  3) PREPTR = PTR
+  4) WHILE PREPTR -> DATA != NUM
+        PREPTR = PTR
+        PTR = PTR -> NEXT
+
+  5) PREPTR -> NEXT = PTR -> NEXT
+  6) DELETE PTR
+  7) EXIT
+
+*/
+
+node *del_after(node *start) {
+  // Checking if the linked list is empty
+  if(start == NULL) {
+    cout<<"The linked list is empty !\n";
+  }
+  else {
+    int num;
+
+    // Storing the element, after which to be deleted
+    cout<<"Enter the element after which to be deleted: ";
+    cin>>num;
+
+    // Storing start to ptr
+    node *ptr = start->next;
+
+    // Defining another pointer for storing
+    // the previous element of ptr
+    node *preptr = ptr;
+
+    // Incrementing till num is found
+    while(preptr->data != num) {
+      preptr = ptr;
+      ptr = ptr->next;
+    }
+
+    // Storing the address of element leaving one block,
+    // which is to be deleted
+    preptr->next = ptr->next;
+
+    // Printing the value to be deleted
+    cout<<"The deleted value is: "<<ptr->data<<endl;
+
+    // Deleting the element
+    delete ptr;
+  }
+
+  return start;
+}
+
+
+/*
+
+ALGORITHM FOR DELETING AN ELEMENT BEFORE A GIVEN NODE:
+
+  1) IF START = NULL
+        Write Underflow
+        EXIT
+
+  2) PTR = START -> NEXT
+  3) PREPTR = PTR
+  4) WHILE PTR -> NEXT -> DATA != NUM
+        PREPTR = PTR
+        PTR = PTR -> NEXT
+
+  5) PREPTR -> NEXT = PTR -> NEXT
+  6) DELETE PTR
+  7) EXIT
+
+*/
+
+node *del_before(node *start) {
+  // Checking if the linked list is empty
+  if(start == NULL) {
+    cout<<"The linked list is empty !\n";
+  }
+  else {
+    int num;
+
+    // Storing the element, before which to be deleted
+    cout<<"Enter the element before which to be deleted: ";
+    cin>>num;
+
+    // Storing start to ptr
+    node *ptr = start -> next;
+
+    // Defining another pointer for storing
+    // the previous element of ptr
+    node *preptr = ptr;
+
+    // Incrementing till num is found
+    while(ptr->next->data != num) {
+      preptr = ptr;
+      ptr = ptr->next;
+    }
+
+    // Storing the address of element leaving one block,
+    // which is to be deleted
+    preptr->next = ptr->next;
+
+    // Printing the value to be deleted
+    cout<<"The deleted value is: "<<ptr->data<<endl;
+
+    // Deleting the element
+    delete ptr;
+  }
+
+  return start;
+}
+
+
+/*
+
+ALGORITHM FOR DELETING CURRENT ELEMENT:
+
+  1) IF START = NULL
+        Write Underflow
+        EXIT
+
+  2) PTR = START -> NEXT
+  3) PREPTR = PTR
+  4) WHILE PTR -> DATA != NUM
+        PREPTR = PTR
+        PTR = PTR -> NEXT
+
+  5) PREPTR -> NEXT = PTR -> NEXT
+  6) DELETE PTR
+  7) EXIT
+
+*/
+
+node *del_element(node *start) {
+  // Checking if the linked list is empty
+  if(start == NULL) {
+    cout<<"The linked list is empty !\n";
+  }
+  else {
+    int num;
+
+    // Storing the element, which to be deleted
+    cout<<"Enter the element which to be deleted: ";
+    cin>>num;
+
+    // Storing start to ptr
+    node *ptr = start -> next;
+
+    // Defining another pointer for storing
+    // the previous element of ptr
+    node *preptr = ptr;
+
+    // Incrementing till num is found
+    while(ptr->data != num) {
+      preptr = ptr;
+      ptr = ptr->next;
+    }
+
+    // Storing the address of element leaving one block,
+    // which is to be deleted
+    preptr->next = ptr->next;
+
+    // Printing the value to be deleted
+    cout<<"The deleted value is: "<<ptr->data<<endl;
+
+    // Deleting the element
+    delete ptr;
+  }
+
+  return start;
+}
+
+
+/*
+
 ALGORITHM FOR COUNTING THE NUMBER OF ELEMENTS:
 
   1) IF START = NULL
@@ -490,9 +673,12 @@ int main() {
         <<"5. Insert before an element\n"
         <<"6. Delete from the beginning\n"
         <<"7. Delete from the end\n"
-        <<"8. Count\n"
-        <<"9. Display\n"
-        <<"10. Exit\n";
+        <<"8. Delete after an element\n"
+        <<"9. Delete before an element\n"
+        <<"10. Delete the element\n"
+        <<"11. Count\n"
+        <<"12. Display\n"
+        <<"13. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -536,21 +722,30 @@ int main() {
       case 7: start = del_end(start);
               break;
 
-      case 8: count(start);
+      case 8: start = del_after(start);
               break;
 
-      case 9: display(start);
+      case 9: start = del_before(start);
               break;
 
-      case 10: break;
+      case 10: start = del_element(start);
+              break;
+
+      case 11: count(start);
+              break;
+
+      case 12: display(start);
+              break;
+
+      case 13: break;
 
       default: cout<<"Wrong option is selecred !!\n";
               break;
     }
-  } while(option != 10);
+  } while(option != 13);
 
   // Freeing the space occupied by start
-  if(option == 10) {
+  if(option == 13) {
     cout<< "\nTHANK YOU for using the program !\n"
         <<"Have a good day.\n\n";
 
