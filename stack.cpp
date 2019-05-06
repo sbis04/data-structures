@@ -133,7 +133,7 @@ int main() {
     cin>>option;
 
     switch(option) {
-      case 1: cout<<"Enter the value to be inserted: ";
+      case 1: cout<<"Enter the value to be pushed: ";
               cin>>value;
 
               s.push(value);
