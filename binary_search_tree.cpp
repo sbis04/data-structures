@@ -28,6 +28,8 @@ struct node *create(node *);
 
 // Functions for traversing the tree
 void preorderTraversal(node *);
+void inorderTraversal(node *);
+void postorderTraversal(node *);
 
 
 /*
@@ -177,6 +179,52 @@ void preorderTraversal(node *tree) {
 }
 
 
+/*
+
+ALGORITHM FOR INORDER TRAVERSAL:
+
+  1) IF TREE != NULL
+  2)      RECURSIVELY CALL INORDER_TRAVERSAL PASSING TREE -> LEFT
+  3)      PRINT TREE -> DATA
+  4)      RECURSIVELY CALL INORDER_TRAVERSAL PASSING TREE -> RIGHT
+     [END OF IF]
+
+  5) EXIT
+
+*/
+
+void inorderTraversal(node *tree) {
+  if(tree != NULL) {
+    inorderTraversal(tree->left);
+    cout<<tree->data<<" ";
+    inorderTraversal(tree->right);
+  }
+}
+
+
+/*
+
+ALGORITHM FOR POSTORDER TRAVERSAL:
+
+  1) IF TREE != NULL
+  2)      RECURSIVELY CALL POSTORDER_TRAVERSAL PASSING TREE -> LEFT
+  3)      RECURSIVELY CALL POSTORDER_TRAVERSAL PASSING TREE -> RIGHT
+  4)      PRINT TREE -> DATA
+     [END OF IF]
+
+  5) EXIT
+
+*/
+
+void postorderTraversal(node *tree) {
+  if(tree != NULL) {
+    postorderTraversal(tree->left);
+    postorderTraversal(tree->right);
+    cout<<tree->data<<" ";
+  }
+}
+
+
 // MAIN FUNCTION
 int main() {
   // Setting the root node to null, initially
@@ -190,7 +238,9 @@ int main() {
         <<"1. Create\n"
         <<"2. Insert\n"
         <<"3. Preorder Traversal\n"
-        <<"4. Exit\n";
+        <<"4. Inorder Traversal\n"
+        <<"5. Postorder Traversal\n"
+        <<"6. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -209,14 +259,22 @@ int main() {
               cout<<endl;
               break;
 
-      case 4: break;
+      case 4: inorderTraversal(root);
+              cout<<endl;
+              break;
+
+      case 5: postorderTraversal(root);
+              cout<<endl;
+              break;
+
+      case 6: break;
 
       default: cout<<"Wrong option !\n";
               break;
     }
-  } while(option != 4);
+  } while(option != 6);
 
-  if(option == 4) {
+  if(option == 6) {
     // Freeing the space for root, after execution of the program
     delete root;
 
