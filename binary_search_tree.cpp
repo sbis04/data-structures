@@ -35,6 +35,11 @@ void preorderTraversal(node *);
 void inorderTraversal(node *);
 void postorderTraversal(node *);
 
+// Functions for finding the number of nodes
+int totalNodes(node *);
+int totalExternalNodes(node *);
+int totalInternalNodes(node *);
+
 
 /*
 
@@ -275,6 +280,91 @@ void postorderTraversal(node *tree) {
 }
 
 
+/*
+
+ALGORITHM FOR COUNTING THE TOTAL NUMBER OF NODES:
+
+  1) IF TREE = NULL
+        RETURN 0
+
+  2) ELSE
+        RETURN (RECURSIVE CALL PASSING TREE -> LEFT
+                + RECURSIVE CALL PASSING TREE -> RIGHT + 1)
+
+      [END OF IT]
+
+  3) EXIT
+
+*/
+
+int totalNodes(node *tree) {
+  if(tree == NULL) {
+    return 0;
+  }
+  else {
+    return (totalNodes(tree->left) + totalNodes(tree->right) + 1);
+  }
+}
+
+
+/*
+
+ALGORITHM FOR COUNTING THE TOTAL NUMBER OF EXTERNAL NODES:
+
+  1) IF TREE = NULL
+        RETURN 0
+
+  2) ELSE IF TREE -> LEFT = NULL && TREE -> RIGHT = NULL
+        RETRUN 1
+
+  3) ELSE
+        RETRUN (RECURSIVE CALL PASSING TREE -> LEFT
+                + RECURSIVE CALL PASSING TREE -> RIGHT)
+    [END OF IF]
+
+  4) EXIT
+
+*/
+
+int totalExternalNodes(node *tree) {
+  if(tree == NULL) {
+    return 0;
+  }
+  else if(tree->left == NULL && tree->right == NULL) {
+    return 1;
+  }
+  else {
+    return (totalExternalNodes(tree->left) + totalExternalNodes(tree->right));
+  }
+}
+
+
+/*
+
+ALGORITHM FOR COUNTING THE TOTAL NUMBER OF INTERNAL NODES:
+
+  1) IF TREE = NULL OR (TREE -> LEFT = NULL && TREE -> RIGHT = NULL)
+        RETURN 0
+
+  2) ELSE
+        RETRUN (RECURSIVE CALL PASSING TREE -> LEFT
+                + RECURSIVE CALL PASSING TREE -> RIGHT + 1)
+    [END OF IF]
+
+  3) EXIT
+
+*/
+
+int totalInternalNodes(node *tree) {
+  if(tree == NULL || (tree->left == NULL && tree->right == NULL)) {
+    return 0;
+  }
+  else {
+    return (totalInternalNodes(tree->left) + totalInternalNodes(tree->right) + 1);
+  }
+}
+
+
 // MAIN FUNCTION
 int main() {
   // Setting the root node to null, initially
@@ -292,7 +382,10 @@ int main() {
         <<"5. Preorder Traversal\n"
         <<"6. Inorder Traversal\n"
         <<"7. Postorder Traversal\n"
-        <<"8. Exit\n";
+        <<"8. Total number of nodes\n"
+        <<"9. Total number of external nodes\n"
+        <<"10. Total number of internal nodes\n"
+        <<"11. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -327,14 +420,26 @@ int main() {
               cout<<endl;
               break;
 
-      case 8: break;
+      case 8: value = totalNodes(root);
+              cout<<"The total number of nodes are "<<value<<endl;
+              break;
+
+      case 9: value = totalExternalNodes(root);
+              cout<<"The total number of external nodes are "<<value<<endl;
+              break;
+
+      case 10: value = totalInternalNodes(root);
+               cout<<"The total number of internal nodes are "<<value<<endl;
+               break;
+
+      case 11: break;
 
       default: cout<<"Wrong option !\n";
               break;
     }
-  } while(option != 8);
+  } while(option != 11);
 
-  if(option == 8) {
+  if(option == 11) {
     // Freeing the space for root, after execution of the program
     delete root;
 
