@@ -40,6 +40,12 @@ int totalNodes(node *);
 int totalExternalNodes(node *);
 int totalInternalNodes(node *);
 
+// Function for calculating the height of the tree
+int height(node *);
+
+// Function for forming the mirror image of the tree
+void mirrorImage(node *);
+
 
 /*
 
@@ -365,6 +371,74 @@ int totalInternalNodes(node *tree) {
 }
 
 
+/*
+
+ALGORITHM FOR CALCULATING THE HEIGHT OF THE TREE:
+
+  1) IF TREE = NULL
+        RETURN 0
+
+  2) ELSE
+        LEFT_HEIGHT = RECURSIVE CALL PASSING TREE -> LEFT
+        RIGHT_HEGHT = RECURSIVE CALL PASSING TREE -> RIGHT
+
+        IF LEFT_HEIGHT > RIGHT_HEGHT
+              RETURN LEFT_HEIGHT + 1
+
+        ELSE
+              RETURN RIGHT_HEGHT + 1
+        [END OF IF]
+    [END OF IF]
+
+  3) EXIT
+
+*/
+
+int height(node *tree) {
+  if(tree == NULL) {
+    return 0;
+  }
+  else {
+    int leftHeight = height(tree->left);
+    int rightHeight = height(tree->right);
+
+    if(leftHeight > rightHeight) {
+      return (leftHeight + 1);
+    }
+    else {
+      return (rightHeight + 1);
+    }
+  }
+}
+
+
+/*
+
+ALGORITHM FOR CREATING MIRROR IMAGE OF THE TREE:
+
+  1) IF TREE != NULL
+  2)      RECURSIVE CALL PASSING TREE -> LEFT
+  3)      RECURSIVE CALL PASSING TREE -> RIGHT
+  4)      PTR = TREE -> LEFT
+  5)      TREE -> LEFT = TREE -> RIGHT
+  6)      TREE -> RIGHT = PTR
+    [END OF IF]
+  7) EXIT
+
+*/
+
+ void mirrorImage(node *tree) {
+  if(tree != NULL) {
+    mirrorImage(tree->left);
+    mirrorImage(tree->right);
+
+    node *ptr = tree->left;
+    tree->left = tree->right;
+    tree->right = ptr;
+  }
+}
+
+
 // MAIN FUNCTION
 int main() {
   // Setting the root node to null, initially
@@ -385,7 +459,9 @@ int main() {
         <<"8. Total number of nodes\n"
         <<"9. Total number of external nodes\n"
         <<"10. Total number of internal nodes\n"
-        <<"11. Exit\n";
+        <<"11. Height of the tree\n"
+        <<"12. Create mirror image of the tree\n"
+        <<"13. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -432,14 +508,22 @@ int main() {
                cout<<"The total number of internal nodes are "<<value<<endl;
                break;
 
-      case 11: break;
+      case 11: value = height(root);
+               cout<<"The height of the tree is "<<value<<endl;
+               break;
+
+      case 12: mirrorImage(root);
+               cout<<"Mirror image of tree created !\n";
+               break;
+
+      case 13: break;
 
       default: cout<<"Wrong option !\n";
               break;
     }
-  } while(option != 11);
+  } while(option != 13);
 
-  if(option == 11) {
+  if(option == 13) {
     // Freeing the space for root, after execution of the program
     delete root;
 
