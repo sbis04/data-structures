@@ -26,6 +26,10 @@ using namespace std;
 struct node *insert(node *, int );
 struct node *create(node *);
 
+// Functions for finding smallest and largest element of the tree
+struct node *findSmallestElement(node *);
+struct node *findLargestElement(node *);
+
 // Functions for traversing the tree
 void preorderTraversal(node *);
 void inorderTraversal(node *);
@@ -158,6 +162,52 @@ node *create(node *tree) {
 
 /*
 
+ALGORITHM FOR FINDING THE SMALLEST ELEMENT OF THE TREE:
+
+  1) IF TREE = NULL OR TREE -> LEFT = NULL
+        RETURN TREE
+  2) ELSE
+        RETURN ( RECURSIVELY CALLING FIND_SMALLEST_ELEMENT PASSING TREE -> LEFT)
+
+  3) EXIT
+
+*/
+
+node *findSmallestElement(node *tree) {
+  if((tree == NULL) || (tree->left == NULL)) {
+    return tree;
+  }
+  else {
+    return findSmallestElement(tree->left);
+  }
+}
+
+
+/*
+
+ALGORITHM FOR FINDING THE LARGEST ELEMENT OF THE TREE:
+
+  1) IF TREE = NULL OR TREE -> RIGHT = NULL
+        RETURN TREE
+  2) ELSE
+        RETURN ( RECURSIVELY CALLING FIND_SMALLEST_ELEMENT PASSING TREE -> RIGHT)
+
+  3) EXIT
+
+*/
+
+node *findLargestElement(node *tree) {
+  if((tree == NULL) || (tree->right == NULL)) {
+    return tree;
+  }
+  else {
+    return findLargestElement(tree->right);
+  }
+}
+
+
+/*
+
 ALGORITHM FOR PREORDER TRAVERSAL:
 
   1) IF TREE != NULL
@@ -237,10 +287,12 @@ int main() {
     cout<<"\n***** MENU *****\n"
         <<"1. Create\n"
         <<"2. Insert\n"
-        <<"3. Preorder Traversal\n"
-        <<"4. Inorder Traversal\n"
-        <<"5. Postorder Traversal\n"
-        <<"6. Exit\n";
+        <<"3. Search for the smallest element\n"
+        <<"4. Search for the largest element\n"
+        <<"5. Preorder Traversal\n"
+        <<"6. Inorder Traversal\n"
+        <<"7. Postorder Traversal\n"
+        <<"8. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -255,26 +307,34 @@ int main() {
               root = insert(root, value);
               break;
 
-      case 3: preorderTraversal(root);
+      case 3: ptr = findSmallestElement(root);
+              cout<<"The smallest element is "<<ptr->data<<endl;
+              break;
+
+      case 4: ptr = findLargestElement(root);
+              cout<<"The largest element is "<<ptr->data<<endl;
+              break;
+
+      case 5: preorderTraversal(root);
               cout<<endl;
               break;
 
-      case 4: inorderTraversal(root);
+      case 6: inorderTraversal(root);
               cout<<endl;
               break;
 
-      case 5: postorderTraversal(root);
+      case 7: postorderTraversal(root);
               cout<<endl;
               break;
 
-      case 6: break;
+      case 8: break;
 
       default: cout<<"Wrong option !\n";
               break;
     }
-  } while(option != 6);
+  } while(option != 8);
 
-  if(option == 6) {
+  if(option == 8) {
     // Freeing the space for root, after execution of the program
     delete root;
 
