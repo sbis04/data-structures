@@ -46,6 +46,12 @@ int height(node *);
 // Function for forming the mirror image of the tree
 void mirrorImage(node *);
 
+// Function for deleting the whole tree
+void deleteTree(node *);
+
+// Function for deleting an element of the tree
+struct node *deleteElement(node *, int );
+
 
 /*
 
@@ -439,6 +445,93 @@ ALGORITHM FOR CREATING MIRROR IMAGE OF THE TREE:
 }
 
 
+/*
+
+ALGORITHM FOR DELETING THE WHOLE TREE:
+
+  1) IF TREE != NULL
+  2)      RECURSIVE CALL PASSING TREE -> LEFT
+  3)      RECURSIVE CALL PASSING TREE -> RIGHT
+  4)      DELETE TREE
+    [END OF IF]
+  5) EXIT
+
+*/
+void deleteTree(node *tree) {
+  if(tree != NULL) {
+    deleteTree(tree->left);
+    deleteTree(tree->right);
+    delete tree;
+  }
+}
+
+
+/*
+
+ALGORITHM FOR DELETING AN ELEMENT OF THE TREE:
+
+  1) IF TREE = NULL
+        RETURN TREE
+
+  2) IF VALUE < TREE -> DATA
+        TREE -> LEFT = RECURSIVE CALL PASSING TREE -> LEFT AND VALUE
+
+  3) ELSE IF VALUE > TREE -> DATA
+        TREE -> RIGHT = RECURSIVE CALL PASSING TREE -> RIGHT AND VALUE
+
+  4) ELSE
+        IF TREE -> LEFT = NULL
+              TEMP = TREE -> RIGHT
+              DELETE TREE
+              RETURN TEMP
+
+        ELSE IF TREE -> RIGHT = NULL
+              TEMP = TREE -> LEFT
+              DELETE TREE
+              RETURN TEMP
+
+         TEMP = FIND THE SMALLEST ELEMENT IN THE RIGHT BRANCH OF TREE
+         TREE -> DATA = TEMP -> DATA
+         TREE -> RIGHT = RECURSIVE CALL PASSING TREE -> RIGHT AND TEMP -> DATA
+     [END OF IF]
+
+  5) EXIT
+
+*/
+
+node *deleteElement(node *tree, int value) {
+  if(tree == NULL) {
+    return tree;
+  }
+
+  if(value < tree->data) {
+    tree->left = deleteElement(tree->left, value);
+  }
+  else if(value > tree->data) {
+    tree->right = deleteElement(tree->right, value);
+  }
+  else {
+    if(tree->left == NULL) {
+      node *temp = tree->right;
+      delete tree;
+      return temp;
+    }
+    else if(tree->right == NULL) {
+      node *temp = tree->left;
+      delete tree;
+      return temp;
+    }
+
+    node *temp = findSmallestElement(tree->right);
+
+    tree->data = temp->data;
+
+    tree->right = deleteElement(tree->right, temp->data);
+  }
+  return tree;
+}
+
+
 // MAIN FUNCTION
 int main() {
   // Setting the root node to null, initially
@@ -461,7 +554,9 @@ int main() {
         <<"10. Total number of internal nodes\n"
         <<"11. Height of the tree\n"
         <<"12. Create mirror image of the tree\n"
-        <<"13. Exit\n";
+        <<"13. Delete the whole tree\n"
+        <<"14. Delete an element of the tree\n"
+        <<"15. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -516,14 +611,26 @@ int main() {
                cout<<"Mirror image of tree created !\n";
                break;
 
-      case 13: break;
+      case 13: deleteTree(root);
+               cout<<"Tree Deleted !\n";
+               root = NULL;
+               break;
+
+      case 14: cout<<"Enter the value to be deleted: ";
+               cin>>value;
+
+               root = deleteElement(root, value);
+               cout<<"The deleted value is "<<value<<endl;
+               break;
+
+      case 15: break;
 
       default: cout<<"Wrong option !\n";
               break;
     }
-  } while(option != 13);
+  } while(option != 15);
 
-  if(option == 13) {
+  if(option == 15) {
     // Freeing the space for root, after execution of the program
     delete root;
 
