@@ -135,7 +135,11 @@ node *insert(node *tree, int value) {
       parentNode = currentNode;
 
       // When the value to be inserted is less than the current node,
-      // we have to go to the left branch and otherwise right
+      // we have to go to the left branch and otherwise
+      // check if the currentNode has any right thread
+
+      // 1) if it has then, assign null to currentNode, else
+      // 2) Traverse currentNode's right branch by one palce
       if(value < currentNode->data) {
         currentNode = currentNode->left;
       }
@@ -149,12 +153,15 @@ node *insert(node *tree, int value) {
       }
     }
 
+    // When the value to be inserted is less than the parentNode value
     if(value < parentNode->data) {
        parentNode->left = new_node;
        new_node->right = parentNode;
        new_node->rightThread = true;
      }
+     // When the value to be inserted is greater than the parentNode value
      else {
+       // When parentNode's right thread is present
        if(parentNode->rightThread) {
          parentNode->rightThread = false;
          new_node->rightThread = true;
@@ -225,23 +232,36 @@ ALGORITHM FOR INORDER TRAVERSAL:
 */
 
 void inorderTraversal(node *tree) {
+  // Storing the tree node in currentNode
   node *currentNode = tree;
 
   do {
+    // Assigning parentNode to be null initially
     node *parentNode = NULL;
 
+    // When current is not null traverse the left branch of the
+    // current node
     while(currentNode != NULL) {
       parentNode = currentNode;
       currentNode = currentNode->left;
     }
 
     if(parentNode != NULL) {
+      // Printing thr parentNode value
       cout<<parentNode->data<<" ";
+
+      // Storing parentNode -> right in currentNode
       currentNode = parentNode->right;
 
+      // When parentNode has rightThread and currentNode is not null
       while(parentNode->rightThread && currentNode != NULL) {
+        // Print the currentNode value
         cout<<currentNode->data<<" ";
+
+        // Store currentNode in parentNode
         parentNode = currentNode;
+
+        // traverse the left branch of the current node by one place
         currentNode = currentNode->right;
       }
     }
