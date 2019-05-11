@@ -266,7 +266,8 @@ int main() {
         <<"1. Create\n"
         <<"2. Insert\n"
         <<"3. Inorder Traversal\n"
-        <<"4. Exit\n";
+        <<"4. Height\n"
+        <<"5. Exit\n";
 
     cout<<"Enter your option: ";
     cin>>option;
@@ -285,14 +286,18 @@ int main() {
               cout<<endl;
               break;
 
-      case 4: break;
+      case 4: value = avlHeight(root);
+              cout<<"The height of the tree is "<<value<<endl;
+              break;
+
+      case 5: break;
 
       default: cout<<"Wrong option !\n";
                break;
     }
-  } while(option != 4);
+  } while(option != 5);
 
-  if(option == 4) {
+  if(option == 5) {
     // Freeing the space for root, after execution of the program
     delete root;
 
