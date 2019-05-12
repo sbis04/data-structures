@@ -121,7 +121,7 @@ ALGORITHM TO DELETE A NODE FROM QUEUE:
 */
 
 void Queue :: del() {
-  // Checking if the stack is empty
+  // Checking if the queue is empty
   if(front == NULL) {
     cout<<"The Queue is empty !\n";
   }
