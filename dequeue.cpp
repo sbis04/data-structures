@@ -27,6 +27,28 @@ using namespace std;
 void input_dequeue();
 void output_dequeue();
 
+
+/*
+
+Declaring a class called Dequeue having:
+
+  three private members:
+        dequeue[MAX]
+        left
+        right
+
+  three public member functions:
+
+        Constructor defining left to -1 and right to -1
+
+        insert right
+        insert left
+        delete right
+        delete left
+        display
+
+*/
+
 class Dequeue {
   int dequeue[MAX], left, right;
 
