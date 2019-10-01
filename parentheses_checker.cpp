@@ -121,15 +121,16 @@ int main() {
       }
       else {
         temp = s.pop();
-        if((exp[i] == ')') && (temp == '{' || temp == '[')) {
+        
+        //making flag=0 for every possible invalid popped elemnt
+        if((exp[i] == ')') && (temp != '(')) 
           flag = 0;
-        }
-        if((exp[i] == '}') && (temp == '(' || temp == ']')) {
+        
+        if((exp[i] == '}') && (temp != '{'))
           flag = 0;
-        }
-        if((exp[i] == ']') && (temp == '(' || temp == '{')) {
+        
+        if((exp[i] == ']') && (temp != '['))
           flag = 0;
-        }
       }
     }
   }
