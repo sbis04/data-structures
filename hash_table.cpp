@@ -27,7 +27,7 @@ using namespace std;
 #define EXPAND_FACTOR 0.7 // The factor to indicates when it's time to expand the hash table
 // The two defines above are used to have a more static hash table which also allows more optimization
 
-// Base class for the Hash Table
+// Base class to create the Hash Table
 class HashTable {
   public:
   HashTable() {
@@ -78,7 +78,7 @@ class HashTable {
     }
     return false;
   }
-  void display() {
+  void display() {  // to display the hashtable contents
     for(int i = 0; i < this->table_size; i++) {
       if (hash_table[i] != 0) {
         cout<<hash_table[i]<<" ";
@@ -94,6 +94,7 @@ class HashTable {
   // This is the main function for a hash table, it's responsible for generating the hash for the value;
   // For easy understading of the process the hash function will be very simple, which also means
   // it would be weak and easy to collide
+  // Hash Function 
   int hash(int value) {
       return (value % this->table_size);
   }
@@ -130,7 +131,7 @@ class HashTable {
       int old_table_size = this->table_size;
       this->hash_table = new_table;
       this->table_size = this->table_size * 2;
-      memset(this->hash_table, 0, sizeof(int) * STARTING_SIZE);
+      memset(this->hash_table, 0, sizeof(int) * STARTING_SIZE);  // inserting default value 0 to hash table
       // Insert all values again, now the position(hash) could have changed because of the new table size
       for(int i = 0; i < old_table_size; i++) {
         if (old_table[i] != 0) {
