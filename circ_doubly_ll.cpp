@@ -721,3 +721,267 @@ int main() {
     delete start;
   }
 }
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+	struct node *prev;
+	int info;
+	struct node *next;
+};
+
+struct node *start, *temp;
+struct node *createcdll(struct node*);
+struct node *printcdll(struct node*);
+struct node *inscdllfirst(struct node*);
+struct node *inscdllend(struct node*);
+struct node *inscdllafgn(struct node*);
+struct node *delcdllfirst(struct node*);
+struct node *delcdllend(struct node*);
+
+int main()
+{
+	struct node *link, *list, *list2, *list3;
+	int i;	
+	do {
+	printf("\nEnter your choice");
+	printf("\n 1: Create a circularly doubly linked list");
+	printf("\n 2: Print the circularly doubly linked list");
+	printf("\n 3: Insert a new node in the first position");
+	printf("\n 4: Insert a new node in end");
+	printf("\n 5: Insert a new node after a node");
+	printf("\n 6: Delete a node in the first position");
+	printf("\n 7: Delete a node from end\n");
+	scanf("%d",&i);
+	switch (i) {
+		case 1:
+			createcdll(link);
+			break;
+		case 2:
+			printcdll(link);
+			break;
+		case 3:
+			inscdllfirst(list);
+			break;
+		case 4:
+			inscdllend(list2);
+			break;
+		case 5:
+			inscdllafgn(list3);
+			break;
+		case 6:
+			delcdllfirst(link);
+			break;
+		case 7:
+		    delcdllend(link);
+			break;
+	}
+	}
+	while(i!=100);
+	return 0;	
+}
+
+/*---------------------------------*/
+
+struct node *createcdll(struct node *link) {
+	int n,i;
+	printf("Enter the no of nodes you want to add: ");
+	scanf("%d", &n);
+	if (n<=0)
+	{
+		printf("ENTER VALID NO.\n");
+		return start;
+	}
+	start=(struct node*)malloc(sizeof(struct node));
+	if (start==NULL)
+	{
+		printf("\nOVERFLOW");
+	}
+	else 
+	{
+		scanf("%d",&start->info);
+		temp=start;
+		temp->next=start;
+		temp->prev=start;
+		
+	for (i=2;i<=n;i++) {
+		link=(struct node*)malloc(sizeof(struct node));
+
+	if (link==NULL)
+	{
+		printf("Memory can't be alloted");
+	}
+	else 
+	{
+		scanf("%d",&link->info);
+		temp->next=link;
+		link->prev=temp;
+		start->prev=link;
+		link->next=start;
+		temp = temp->next;
+	}
+	}
+}
+	return start;
+}
+
+/*---------------------------------*/
+
+struct node *printcdll(struct node *link) {
+	if (start == NULL) {
+		printf("OVERFLOW\n");
+	}
+	else
+	{	
+		link = start;
+		while (link->next != start) {
+		printf("%d ",(link->info));
+		link = link->next;
+	}
+		printf("%d",link->info);
+	}
+	return start;
+}
+
+/*---------------------------------*/
+
+struct node *inscdllfirst(struct node *list) {
+	list=(struct node*)malloc(sizeof(struct node));
+	if (start==NULL)
+	{
+		printf("Enter the element you want to Insert: ");
+		scanf("%d",&list->info);
+		start=list;
+		list->prev=start;
+		list->next=start;
+	}
+	else
+	{
+		printf("Enter the element you want to Insert: ");
+		scanf("%d",&list->info);
+		 temp = start;   
+    while(temp -> next != start)  
+    {  
+        temp = temp -> next;   
+    }  
+    temp -> next = list;  
+    list -> prev = temp;  
+    start -> prev = list;  
+    list -> next = start;  
+    start = list;  
+	}
+	return start;
+}
+
+/*---------------------------------*/
+
+struct node *inscdllend(struct node *list2) {  
+   list2 = (struct node *) malloc(sizeof(struct node));  
+   if(list2 == NULL)  
+   {  
+       printf("\nOVERFLOW");  
+   }  
+   else  
+   {  
+       printf("\nEnter value you want to insert: ");  
+       scanf("%d",&list2->info);  
+       if(start == NULL)  
+       {  
+           start = list2;  
+           list2 -> next = start;   
+           list2 -> prev = start;   
+       }  
+       else  
+       {  
+          temp = start;  
+          while(temp->next !=start)  
+          {  
+              temp = temp->next;  
+          }  
+          temp->next = list2;  
+          list2 ->prev=temp;  
+          start -> prev = list2;  
+   		 list2-> next = start;  
+        }
+       }
+        return start;
+}
+
+/*---------------------------------*/
+
+struct node *inscdllafgn(struct node *list3)
+{
+   int value;
+   list3 = (struct node *) malloc(sizeof(struct node));  
+   printf("Enter node to be inserted and Enter existing node after which new node will be inserted: \n");
+   scanf("%d %d",&list3->info,&value);  
+   temp=start;
+    while (temp->info != value) {
+        temp = temp->next; 
+    }
+    struct node *after = temp->next; 
+    temp->next = list3; 
+    list3->prev = temp; 
+    list3->next = after; 
+    after->prev = list3; 
+    return start;
+}
+
+/*---------------------------------*/
+
+struct node *delcdllfirst(struct node *link) {
+	link=start; 
+    if(link == NULL)  
+    {  
+        printf("\nNo Node Present");  
+    }  
+    else if(link->next == start)  
+    {  
+        start = NULL;   
+        free(start);  
+    }  
+    else  
+    {     
+        while(link -> next != start)  
+        {  
+            link = link -> next;  
+        }  
+        link -> next = start -> next;  
+        start -> next = link;  
+        start ->prev=link;
+        free(start);  
+        start = link -> next; 
+		printf("\nNode is deleted");   
+    }  
+    return start;
+}
+
+/*---------------------------------*/
+
+struct node *delcdllend(struct node *link) { 
+    link=start;
+    if(link == NULL)  
+    {  
+        printf("\nNo Node Present");  
+    }  
+    else if(link->next == start)  
+    {  
+        link = NULL;   
+        free(link);   
+    }  
+    else   
+    {    
+        if (link->next != start)  
+        {  
+            link = link -> next;   
+        }  
+        link -> next = start;  
+        start -> prev = link;    
+        free(link);  
+        printf("\nNode is deleted");  
+    }  
+    return start;
+    }
+/*---------------------------------*/
