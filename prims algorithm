@@ -1,0 +1,68 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+    int v;
+    cout<<"enter number of vertices\n";
+    cin>>v;
+    cout<<"enter adjacency matrix\n";
+    int arr[v][v],i,j;
+    for(i=0;i<v;i++)
+    {
+        for(j=0;j<v;j++)
+        {
+            cin>>arr[i][j];
+        }
+    }
+    int parent[v],key[v];
+    bool visited[v];
+    for(i=0;i<v;i++)
+    {
+       parent[i]=-1;
+       visited[i]=false;
+       key[i]=INT_MAX;
+    }
+    key[0]=0;
+    int p=1,l;
+    while(p)
+    {
+        l=0;
+        for(i=0;i<v;i++)
+        {
+            if(visited[i]==false)
+            {
+                l=1;
+            }
+        }
+        if(l==0)
+        {
+            p=0;
+            break;
+        }
+        int min=-1;
+        for(i=0;i<v;i++)
+        {
+            if(visited[i]==false && (key[i]<min || min==-1))
+            {
+                min=i;
+            }
+        }
+        for(j=0;j<v;j++)
+        {
+            if(visited[j]==false && arr[min][j]!=0)
+            {
+               if(arr[min][j]<key[i])
+               {
+                   key[j]=arr[min][j];
+                   parent[j]=min;
+               }
+
+            }
+        }
+        visited[min]=true;
+    }
+    for(i=1;i<v;i++)
+    {
+        cout<<parent[i]<<" "<<i<<" "<<key[i]<<endl;
+    }
+}
