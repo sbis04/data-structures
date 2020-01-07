@@ -80,6 +80,7 @@ ALGORITHM FOR INSERTING AT THE BEGINNING:
 
 node *insert_beg(node *start, int value) {
   // Creating a new node
+  // new is the syntax to give memory dynamicaly
   node *new_node = new node;
 
   // Storing the data and assigning
