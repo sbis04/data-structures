@@ -21,268 +21,163 @@
 #include <iostream>
 using namespace std;
 
-// Defining the maximum size of the queue to be 10
-#define MAX 10
 
-void input_dequeue();
-void output_dequeue();
-
-
-/*
-
-Declaring a class called Dequeue having:
-
-  three private members:
-        dequeue[MAX]
-        left
-        right
-
-  three public member functions:
-
-        Constructor defining left to -1 and right to -1
-
-        insert right
-        insert left
-        delete right
-        delete left
-        display
-
-*/
-
-class Dequeue {
-  int dequeue[MAX], left, right;
-
-public:
-  Dequeue(): left(-1), right(-1) {}
-  void insert_right(int );
-  void insert_left(int );
-  void del_right();
-  void del_left();
-  void display();
+struct node {
+    int data;
+    struct node* link;
 };
 
-void Dequeue :: insert_right(int value) {
-  if((left == right + 1) || (left == 0 && right == MAX-1)) {
-    cout<<"The Queue is full !\n";
-    return;
-  }
-  if(left == -1) {
-    left = 0;
-    right = 0;
-  }
-  else {
-    if(right == MAX-1) {
-      right = 0;
+
+struct node* front, *rear;
+
+void insert_right(struct node* front1, struct node* rear1, int item){
+    struct node* newNode = new node;
+    if(newNode == NULL)
+        {
+            cout << "Overflow in memory";
+            return;
+        }
+    newNode->data = item;
+    newNode->link = NULL;
+
+    if(front == NULL && rear == NULL)
+        {
+            front = rear = newNode;
+        }
+    else
+    {
+        rear->link = newNode;
+        rear = newNode;
     }
+    
+}
+
+void delete_front(struct node* front1, struct node* rear1){
+    if(front == NULL)
+    {
+        cout << "Queue is already empty.";
+        return;
+    }
+
+    struct node* to_delete = front;
+
+    if(front == rear){
+        front = rear =NULL;
+    }
+
     else {
-      right++;
+        front = front->link;
+        to_delete->link = NULL;    
     }
-  }
-  dequeue[right] = value;
 }
 
-void Dequeue :: insert_left(int value) {
-  if((left == right + 1) || (left == 0 && right == MAX-1)) {
-    cout<<"The queue is full !\n";
-    return;
-  }
-  if(left == -1) {
-    left = 0;
-    right = 0;
-  }
-  else {
-    if(left == 0) {
-      left = MAX-1;
+void insert_beg(struct node* front1, struct node* rear1, int item){
+    struct node* newNode = new node;
+    newNode->data = item;
+    newNode->link = NULL;
+    if(newNode == NULL)
+    {
+        cout << "Overflow in memory";
+        return;
+    } 
+
+    if(front == NULL && rear == NULL)
+        front = rear = newNode;
+    else{ 
+        newNode->link = front;
+        front = newNode;
     }
-    else {
-      left--;
-    }
-  }
-  dequeue[left] = value;
 }
 
-void Dequeue :: del_right() {
-  if(left == -1) {
-    cout<<"The queue is empty !\n";
-    return;
-  }
-
-  cout<<"The deleted value is: "<<dequeue[right]<<endl;
-
-  if(left == right) {
-    left = -1;
-    right = -1;
-  }
-  else {
-    if(right == 0) {
-      right = MAX-1;
+void delete_rear(struct node* front1, struct node* rear1){
+    if(front == NULL && rear == NULL){
+        cout << "Underflow\n";
+        return;
     }
-    else {
-      right--;
+
+    struct node* parent = front;
+    while(1){
+        if(parent->link != NULL && parent->link == rear)
+            break;
+        else if(parent == rear)
+            break;
+        parent = parent->link;
     }
-  }
+
+    if(parent == rear){
+        front = rear = NULL;
+    }
+    else if(parent->link  == rear){
+        parent->link =  NULL;
+
+        // I forgot to update the rear pointer here and that causes
+        // problems
+        
+        rear = parent;
+    }
 }
 
-void Dequeue :: del_left() {
-  if(left == -1) {
-    cout<<"The queue is empty !\n";
-    return;
-  }
 
-  cout<<"The deleted value is: "<<dequeue[left]<<endl;
+void print_queue(struct node* front1, struct node* rear1){
+    
+    if(front == NULL && rear == NULL){
+        cout << "Queue doesn't exist";
+        return;
+    }
+    struct node* ptr = front;
+    while(ptr != NULL){
+        cout  << ptr->data << " ";
+        ptr = ptr->link;
+    }
 
-  if(left == right) {
-    left = -1;
-    right = -1;
-  }
-  else {
-    if(left == MAX-1) {
-      left = 0;
-    }
-    else {
-      left++;
-    }
-  }
 }
 
-void Dequeue :: display() {
-  int front = left;
-  int rear = right;
+int main(){
 
-  if(front == -1) {
-    cout<<"The queue is empty !\n";
-    return;
-  }
-  if(front <= rear) {
-    while(front <= rear) {
-      cout<<dequeue[front]<<" ";
-      front++;
-    }
-  }
-  else {
-    while(front <= MAX-1) {
-      cout<<dequeue[front]<<" ";
-      front++;
-    }
-    front = 0;
-    while(front <= rear) {
-      cout<<dequeue[front]<<" ";
-      front++;
-    }
-  }
-  cout<<endl;
-}
 
-void input_dequeue() {
-  int option, value;
-  Dequeue dq;
+    struct node* front =  NULL;
+    struct node* rear = NULL;
+    cout << "1. Enter element at end\n";
+    cout << "2. Enter element in start\n";
+    cout << "3. Delete element from start\n";
+    cout << "4. Delete element from end\n";
 
-  do {
-    cout<<"\n****** MENU ******\n"
-        <<"1. Insert right\n"
-        <<"2. Delete right\n"
-        <<"3. Delete left\n"
-        <<"4. Display\n"
-        <<"5. Exit to Main Menu\n";
+    int choice;
+    cin >> choice;
+    cin.ignore();
+    int item;
+    do{
+        switch (choice)
+        {
+        case 1:
+            cout << "Enter item: ";
+            cin >> item;
+            cin.ignore();
+            insert_right(front, rear, item);
+            cout << "Printing\n";
+            print_queue(front, rear);
+            break;
+        case 2:
+            cout << "Enter item: ";
+            cin >> item;
+            cin.ignore();
+            insert_beg(front, rear, item);
+            print_queue(front, rear);
+            break;
 
-    cout<<"Enter your option: ";
-    cin>>option;
+        case 3: 
+            delete_front(front, rear);
+            print_queue(front, rear);
+            break;
+        case 4:
+            delete_rear(front, rear);
+            print_queue(front, rear);
+        default:
+            break;
+        }
 
-    switch(option) {
-      case 1: cout<<"Enter the value to be inserted: ";
-              cin>>value;
-
-              dq.insert_right(value);
-              break;
-
-      case 2: dq.del_right();
-              break;
-
-      case 3: dq.del_left();
-              break;
-
-      case 4: dq.display() ;
-              break;
-
-      case 5: break;
-
-      default: cout<<"Wrong option !\n";
-               break;
-    }
-  } while(option != 5);
-}
-
-void output_dequeue() {
-  int option, value;
-  Dequeue dq;
-
-  do {
-    cout<<"\n****** MENU ******\n"
-        <<"1. Insert right\n"
-        <<"2. Insert left\n"
-        <<"3. Delete left\n"
-        <<"4. Display\n"
-        <<"5. Exit to Main Menu\n";
-
-    cout<<"Enter your option: ";
-    cin>>option;
-
-    switch(option) {
-      case 1: cout<<"Enter the value to be inserted: ";
-              cin>>value;
-
-              dq.insert_right(value);
-              break;
-
-      case 2: cout<<"Enter the value to be inserted: ";
-              cin>>value;
-
-              dq.insert_left(value);
-              break;
-
-      case 3: dq.del_left();
-              break;
-
-      case 4: dq.display() ;
-              break;
-
-      case 5: break;
-
-      default: cout<<"Wrong option !\n";
-               break;
-    }
-  } while(option != 5);
-}
-
-int main() {
-  int option, value;
-  Dequeue dq;
-
-  do {
-    cout<<"\n******* MAIN MENU *******\n"
-        <<"1. Input Restricted Dequeue\n"
-        <<"2. Output Restricted Dequeue\n"
-        <<"3. Exit\n";
-
-    cout<<"Enter your option: ";
-    cin>>option;
-
-    switch(option) {
-      case 1: input_dequeue();
-              break;
-
-      case 2: output_dequeue();
-              break;
-
-      case 3: break;
-
-      default: cout<<"Wrong option !\n";
-               break;
-    }
-  } while(option != 3);
-
-  if(option == 3) {
-    cout<< "\nTHANK YOU for using the program !\n"
-        <<"Have a good day.\n\n";
-  }
+        cout << "\nEnter choice: ";
+        cin >> choice;
+        cin.ignore();
+    }while(choice != -1);
 }
